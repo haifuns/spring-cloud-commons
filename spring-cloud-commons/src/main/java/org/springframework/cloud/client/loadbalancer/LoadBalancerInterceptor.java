@@ -49,6 +49,8 @@ public class LoadBalancerInterceptor implements ClientHttpRequestInterceptor {
 	@Override
 	public ClientHttpResponse intercept(final HttpRequest request, final byte[] body,
 			final ClientHttpRequestExecution execution) throws IOException {
+
+		// 从请求中取出服务名
 		final URI originalUri = request.getURI();
 		String serviceName = originalUri.getHost();
 		Assert.state(serviceName != null, "Request URI does not contain a valid hostname: " + originalUri);

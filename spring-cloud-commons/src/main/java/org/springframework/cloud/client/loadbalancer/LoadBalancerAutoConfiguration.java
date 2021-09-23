@@ -34,6 +34,8 @@ import org.springframework.retry.support.RetryTemplate;
 import org.springframework.web.client.RestTemplate;
 
 /**
+ * {@link LoadBalanced} 注解实现RestTemplate负载均衡核心配置类
+ *
  * Auto configuration for Ribbon (client side load balancing).
  *
  * @author Spencer Gibb
@@ -59,6 +61,7 @@ public class LoadBalancerAutoConfiguration {
 			public void afterSingletonsInstantiated() {
 				for (RestTemplate restTemplate : LoadBalancerAutoConfiguration.this.restTemplates) {
 					for (RestTemplateCustomizer customizer : customizers) {
+						// 这里使用的RestTemplateCustomizer定制restTemplate
 						customizer.customize(restTemplate);
 					}
 				}
@@ -96,6 +99,8 @@ public class LoadBalancerAutoConfiguration {
 					List<ClientHttpRequestInterceptor> list = new ArrayList<>(
 							restTemplate.getInterceptors());
 					list.add(loadBalancerInterceptor);
+
+					// 定制restTemplate其实就是添加了拦截器
 					restTemplate.setInterceptors(list);
 				}
 			};
